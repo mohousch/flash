@@ -1,4 +1,4 @@
-URL="https://www.kathrein.de/esc-kathrein/data/receiver/ufs-913/"
+URL="https://www.kathrein.de/fileadmin/media/produkte/downloads/ufs-913/"
 FILE="ufs913_fw1.04.zip"
 
 FILE_DATA="ufs913.software.V1.04.B39.data"
