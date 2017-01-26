@@ -20,7 +20,7 @@ elif [ -d $CURDIR/../../source/neutrino-mp-tangos ]; then
 	NMP_REV=_NMP-rev`cd $CURDIR/../../source/neutrino-mp-tangos && git log | grep "^commit" | wc -l`-tangos
 fi
 
-gitversion="_CDK-rev`(cd $CURDIR/../../ && git log | grep "^commit" | wc -l)`$HAL_REV$NMP_REV"
+gitversion="_BASE-rev`(cd $CURDIR/../../ && git log | grep "^commit" | wc -l)`$HAL_REV$NMP_REV"
 
 echo "GITVERSION   = $gitversion"
 export gitversion
