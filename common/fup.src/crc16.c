@@ -6,7 +6,8 @@
 /*
  * CRC table for the CRC-16. The poly is 0x8005 (x^16 + x^15 + x^2 + 1)
  */
-static const uint16_t crc16_table[256] = {
+static const uint16_t crc16_table[256] =
+{
 	0x0000, 0xC0C1, 0xC181, 0x0140, 0xC301, 0x03C0, 0x0280, 0xC241,
 	0xC601, 0x06C0, 0x0780, 0xC741, 0x0500, 0xC5C1, 0xC481, 0x0440,
 	0xCC01, 0x0CC0, 0x0D80, 0xCD41, 0x0F00, 0xCFC1, 0xCE81, 0x0E40,
@@ -43,8 +44,8 @@ static const uint16_t crc16_table[256] = {
 
 /*
  * crc16_byte - compute the CRC-16 for a byte
- * @crc:	previous CRC value
- * @data: 	byte value
+ * @crc:    previous CRC value
+ * @data:   byte value
  */
 static inline uint16_t crc16_byte(uint16_t crc, const uint8_t data)
 {
@@ -53,9 +54,9 @@ static inline uint16_t crc16_byte(uint16_t crc, const uint8_t data)
 
 /*
  * crc16 - compute the CRC-16 for the data buffer
- * @crc:	previous CRC value
- * @buffer:	data pointer
- * @len:	number of bytes in the buffer
+ * @crc:    previous CRC value
+ * @buffer: data pointer
+ * @len:    number of bytes in the buffer
  *
  * Returns the updated CRC value.
  */
