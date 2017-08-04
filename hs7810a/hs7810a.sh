@@ -9,58 +9,32 @@ CURDIR=`pwd`
 BASEDIR=$CURDIR/../..
 
 TUFSBOXDIR=$BASEDIR/tufsbox
-
 SCRIPTDIR=$CURDIR/scripts
 TMPDIR=$CURDIR/tmp
 TMPROOTDIR=$TMPDIR/ROOT
 TMPKERNELDIR=$TMPDIR/KERNEL
+OUTDIR=$CURDIR/out
 TMPFWDIR=$TMPDIR/FW
 
-OUTDIR=$CURDIR/out
-
-if [  -e $TMPDIR ]; then
-  rm -rf $TMPDIR/*
+if [ -e $TMPDIR ]; then
+	rm -rf $TMPDIR/*
 fi
 
-mkdir $TMPDIR
-mkdir $TMPROOTDIR
-mkdir $TMPKERNELDIR
-mkdir $TMPFWDIR
+mkdir -p $TMPDIR
+mkdir -p $TMPROOTDIR
+mkdir -p $TMPKERNELDIR
+mkdir -p $TMPFWDIR
 
-echo "This script creates flashable images for Fortis HS7910a"
-echo "Author: Schischu, BPanther"
-echo "Date: 10-25-2011"
 echo "-----------------------------------------------------------------------"
 echo "It's expected that an image was already build prior to this execution!"
-echo "-----------------------------------------------------------------------"
-
-$BASEDIR/flash/common/common.sh $BASEDIR/flash/common/
-
 echo "-----------------------------------------------------------------------"
 echo "Checking target..."
 $SCRIPTDIR/prepare_root.sh $CURDIR $TUFSBOXDIR/release $TMPROOTDIR $TMPKERNELDIR $TMPFWDIR
 echo "Root prepared"
-echo "Checking if flashtool fup exists..."
-if [ ! -e $CURDIR/fup ]; then
-  echo "Flashtool fup is missing, trying to compile it..."
-  cd $CURDIR/../common/fup.src
-  $CURDIR/../common/fup.src/compile.sh USE_ZLIB
-  mv $CURDIR/../common/fup.src/fup $CURDIR/fup
-  cd $CURDIR
-  if [ ! -e $CURDIR/fup ]; then
-    echo "Compiling failed! Exiting..."
-    echo "It the error is \"cannot find -lz\" than you need to install the 32bit version of libz"
-    exit 3
-  else
-    echo "Compiling successfull"
-  fi
-fi
 
 if [ ! -e $CURDIR/dummy.squash.signed.padded ]; then
-  cp $CURDIR/../common/fup.src/dummy.squash.signed.padded $CURDIR/dummy.squash.signed.padded
+	cp $CURDIR/../common/fup.src/dummy.squash.signed.padded $CURDIR/dummy.squash.signed.padded
 fi
-
-echo "Flashtool fup exists"
 echo "-----------------------------------------------------------------------"
 echo "Checking targets..."
 echo "Found flashtarget:"
@@ -71,9 +45,9 @@ echo "   3) KERNEL"
 read -p "Select flashtarget (1-4)? "
 case "$REPLY" in
 #	1)  echo "Creating KERNEL with ROOT..."
-#		$SCRIPTDIR/flash_part_wo_fw.sh $CURDIR $TUFSBOXDIR $OUTDIR $TMPKERNELDIR $TMPROOTDIR;;
+#		$SCRIPTDIR/flash_part_wo_fw.sh $CURDIR $TUFSBOXDIR $OUTDIR $TMPROOTDIR $TMPKERNELDIR;;
 	2)  echo "Creating KERNEL with ROOT and FW..."
-		$SCRIPTDIR/flash_part_w_fw.sh $CURDIR $TUFSBOXDIR $OUTDIR $TMPKERNELDIR $TMPFWDIR $TMPROOTDIR;;
+		$SCRIPTDIR/flash_part_w_fw.sh $CURDIR $TUFSBOXDIR $OUTDIR $TMPROOTDIR $TMPKERNELDIR $TMPFWDIR;;
 	3)  echo "Creating KERNEL..."
 		$SCRIPTDIR/flash_part_kernel.sh $CURDIR $TUFSBOXDIR $OUTDIR $TMPKERNELDIR;;
 #	4)  echo "Creating FW..."
@@ -83,33 +57,32 @@ case "$REPLY" in
 esac
 clear
 echo "-----------------------------------------------------------------------"
+
 AUDIOELFSIZE=`stat -c %s $TMPFWDIR/audio.elf`
+if [ "$AUDIOELFSIZE" == "0" -o "$AUDIOELFSIZE" == "" ]; then
+	echo -e "\033[01;31m"
+	echo "!!! WARNING: AUDIOELF SIZE IS ZERO OR MISSING !!!"
+	echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
+	echo -e "\033[00m"
+fi
+
 VIDEOELFSIZE=`stat -c %s $TMPFWDIR/video.elf`
-if [ $AUDIOELFSIZE == "0" ]; then
-  echo "!!! WARNING: AUDIOELF SIZE IS ZERO !!!"
-  echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
-  echo "-----------------------------------------------------------------------"
+if [ "$VIDEOELFSIZE" == "0" -o "$VIDEOELFSIZE" == "" ]; then
+	echo -e "\033[01;31m"
+	echo "!!! WARNING: VIDEOELF SIZE IS ZERO OR MISSING !!!"
+	echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
+	echo -e "\033[00m"
 fi
-if [ $VIDEOELFSIZE == "0" ]; then
-  echo "!!! WARNING: VIDEOELF SIZE IS ZERO !!!"
-  echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
-  echo "-----------------------------------------------------------------------"
-fi
+
 if [ ! -e $TMPROOTDIR/dev/mtd0 ]; then
-  echo "!!! WARNING: DEVS ARE MISSING !!!"
-  echo "IF YOUR ARE CREATING THE ROOT PART MAKE SURE THAT YOU USE A CORRECT DEV.TAR"
-  echo "-----------------------------------------------------------------------"
+	echo -e "\033[01;31m"
+	echo "!!! WARNING: DEVS ARE MISSING !!!"
+	echo "IF YOUR ARE CREATING THE ROOT PART MAKE SURE THAT YOU USE A CORRECT DEV.TAR"
+	echo -e "\033[00m"
 fi
 
-echo ""
-echo ""
-echo ""
-echo "-----------------------------------------------------------------------"
 echo "Flashimage created:"
-echo `ls $OUTDIR`
-
-echo "-----------------------------------------------------------------------"
+echo ""
 echo "To flash the created image copy the *.ird file to"
 echo "your usb drive"
 echo ""
-

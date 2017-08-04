@@ -3,21 +3,21 @@
 CURDIR=$1
 TUFSBOXDIR=$2
 OUTDIR=$3
-TMPKERNELDIR=$4
-TMPROOTDIR=$5
+TMPROOTDIR=$4
+TMPKERNELDIR=$5
 TMPVARDIR=$6
 
 echo "CURDIR       = $CURDIR"
 echo "TUFSBOXDIR   = $TUFSBOXDIR"
 echo "OUTDIR       = $OUTDIR"
-echo "TMPKERNELDIR = $TMPKERNELDIR"
 echo "TMPROOTDIR   = $TMPROOTDIR"
+echo "TMPKERNELDIR = $TMPKERNELDIR"
 echo "TMPVARDIR    = $TMPVARDIR"
 
+MKSQUASHFS=$TUFSBOXDIR/host/bin/mksquashfs
 MKFSJFFS2=$TUFSBOXDIR/host/bin/mkfs.jffs2
-MKSQUASHFS=$CURDIR/../common/mksquashfs4.0
 SUMTOOL=$TUFSBOXDIR/host/bin/sumtool
-PAD=$CURDIR/../common/pad
+PAD=$TUFSBOXDIR/host/bin/pad
 
 if [ -f $TMPROOTDIR/etc/hostname ]; then
 	HOST=`cat $TMPROOTDIR/etc/hostname`
@@ -159,22 +159,22 @@ rm -f $CURDIR/mtd_var.sum.bin
 SIZE=`stat mtd_kernel.pad.bin -t --format %s`
 SIZE=`printf "0x%X" $SIZE`
 if [[ $SIZE > "$SIZE_KERNEL" ]]; then
-  echo -e "\e[31mKERNEL TO BIG. $SIZE instead of $SIZE_KERNEL\e[0m" > /dev/stderr
-  read -p "Press ENTER to continue..."
+	echo -e "\e[31mKERNEL TO BIG. $SIZE instead of $SIZE_KERNEL\e[0m" > /dev/stderr
+	read -p "Press ENTER to continue..."
 fi
 
 SIZE=`stat mtd_root.pad.bin -t --format %s`
 SIZE=`printf "0x%X" $SIZE`
 if [[ $SIZE > "$SIZE_ROOT" ]]; then
-  echo -e "\e[31mROOT TO BIG. $SIZE instead of $SIZE_ROOT\e[0m" > /dev/stderr
-  read -p "Press ENTER to continue..."
+	echo -e "\e[31mROOT TO BIG. $SIZE instead of $SIZE_ROOT\e[0m" > /dev/stderr
+	read -p "Press ENTER to continue..."
 fi
 
 SIZE=`stat mtd_var.sum.pad.bin -t --format %s`
 SIZE=`printf "0x%X" $SIZE`
 if [[ $SIZE > "$SIZE_VAR" ]]; then
-  echo -e "\e[31mVAR TO BIG. $SIZE instead of $SIZE_VAR\e[0m" > /dev/stderr
-  read -p "Press ENTER to continue..."
+	echo -e "\e[31mVAR TO BIG. $SIZE instead of $SIZE_VAR\e[0m" > /dev/stderr
+	read -p "Press ENTER to continue..."
 fi
 
 rm -f $CURDIR/mtd_kernel.pad.bin

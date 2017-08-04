@@ -9,15 +9,13 @@ CURDIR=`pwd`
 BASEDIR=$CURDIR/../..
 
 TUFSBOXDIR=$BASEDIR/tufsbox
-
 SCRIPTDIR=$CURDIR/scripts
 TMPDIR=$CURDIR/tmp
 TMPROOTDIR=$TMPDIR/ROOT
-TMPEXTDIR=$TMPDIR/EXT
 TMPKERNELDIR=$TMPDIR/KERNEL
-TMPFWDIR=$TMPDIR/FW
-
 OUTDIR=$CURDIR/out
+TMPFWDIR=$TMPDIR/FW
+TMPEXTDIR=$TMPDIR/EXT
 
 if [ -e $TMPDIR ]; then
 	rm -rf $TMPDIR/*
@@ -28,73 +26,42 @@ mkdir -p $TMPROOTDIR
 mkdir -p $TMPKERNELDIR
 mkdir -p $TMPFWDIR
 
-echo "This script creates flashable images for Atevio 7500"
-echo "Will probably be adapted in future to support clones."
-echo "Author: Schischu, BPanther"
-echo "Date: 05-05-2013"
 echo "-----------------------------------------------------------------------"
 echo "It's expected that an image was already build prior to this execution!"
 echo "-----------------------------------------------------------------------"
-
-$BASEDIR/flash/common/common.sh $BASEDIR/flash/common/
-
-echo "-----------------------------------------------------------------------"
 echo "Checking target..."
-$SCRIPTDIR/prepare_root.sh $CURDIR $TUFSBOXDIR/release $TMPROOTDIR $TMPEXTDIR $TMPKERNELDIR $TMPFWDIR
+$SCRIPTDIR/prepare_root.sh $CURDIR $TUFSBOXDIR/release $TMPROOTDIR $TMPKERNELDIR $TMPFWDIR $TMPEXTDIR
 echo "Root prepared"
-echo "Checking if flashtool fup exists..."
-if [ ! -e $CURDIR/fup ]; then
-  echo "Flashtool fup is missing, trying to compile it..."
-  cd $CURDIR/../common/fup.src
-  $CURDIR/../common/fup.src/compile.sh USE_ZLIB
-  mv $CURDIR/../common/fup.src/fup $CURDIR/fup
-  cd $CURDIR
-  if [ ! -e $CURDIR/fup ]; then
-    echo "Compiling failed! Exiting..."
-    echo "It the error is \"cannot find -lz\" than you need to install the 32bit version of libz"
-    exit 3
-  else
-    echo "Compiling successfull"
-  fi
-fi
-
-echo "Flashtool fup exists"
 echo "-----------------------------------------------------------------------"
 echo "Creating flash image..."
-$SCRIPTDIR/flash_part_w_fw.sh $CURDIR $TUFSBOXDIR $OUTDIR $TMPKERNELDIR $TMPFWDIR $TMPROOTDIR $TMPEXTDIR
+$SCRIPTDIR/flash_part_w_fw.sh $CURDIR $TUFSBOXDIR $OUTDIR $TMPROOTDIR $TMPKERNELDIR $TMPFWDIR $TMPEXTDIR
 echo "-----------------------------------------------------------------------"
+
 AUDIOELFSIZE=`stat -c %s $TMPFWDIR/audio.elf`
 if [ "$AUDIOELFSIZE" == "0" -o "$AUDIOELFSIZE" == "" ]; then
-  echo -e "\033[01;31m"
-  echo "!!! WARNING: AUDIOELF SIZE IS ZERO OR MISSING !!!"
-  echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
-  echo  "-----------------------------------------------------------------------"
-  echo -e "\033[00m"
+	echo -e "\033[01;31m"
+	echo "!!! WARNING: AUDIOELF SIZE IS ZERO OR MISSING !!!"
+	echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
+	echo -e "\033[00m"
 fi
+
 VIDEOELFSIZE=`stat -c %s $TMPFWDIR/video.elf`
 if [ "$VIDEOELFSIZE" == "0" -o "$VIDEOELFSIZE" == "" ]; then
-  echo -e "\033[01;31m"
-  echo "!!! WARNING: VIDEOELF SIZE IS ZERO OR MISSING !!!"
-  echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
-  echo  "-----------------------------------------------------------------------"
-  echo -e "\033[00m"
+	echo -e "\033[01;31m"
+	echo "!!! WARNING: VIDEOELF SIZE IS ZERO OR MISSING !!!"
+	echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
+	echo -e "\033[00m"
 fi
+
 if [ ! -e $TMPROOTDIR/dev/mtd0 ]; then
-  echo -e "\033[01;31m"
-  echo "!!! WARNING: DEVS ARE MISSING !!!"
-  echo "IF YOUR ARE CREATING THE ROOT PART MAKE SURE THAT YOU USE A CORRECT DEV.TAR"
-  echo "-----------------------------------------------------------------------"
-  echo -e "\033[00m"
+	echo -e "\033[01;31m"
+	echo "!!! WARNING: DEVS ARE MISSING !!!"
+	echo "IF YOUR ARE CREATING THE ROOT PART MAKE SURE THAT YOU USE A CORRECT DEV.TAR"
+	echo -e "\033[00m"
 fi
 
-echo ""
-echo ""
-echo ""
-echo "-----------------------------------------------------------------------"
 echo "Flashimage created:"
-ls -o $OUTDIR | awk -F " " '{print $7}'
-
-echo "-----------------------------------------------------------------------"
+echo ""
 echo "To flash the created image copy the *.ird file to the root (/) of your usb drive."
 echo "To start the flashing process press CH UP for 10 sec on your box while the box is starting."
 echo ""

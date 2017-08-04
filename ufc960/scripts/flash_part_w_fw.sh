@@ -14,10 +14,10 @@ echo "TMPKERNELDIR = $TMPKERNELDIR"
 echo "TMPROOTDIR   = $TMPROOTDIR"
 echo "TMPVARDIR    = $TMPVARDIR"
 
+MKSQUASHFS=$TUFSBOXDIR/host/bin/mksquashfs
 MKFSJFFS2=$TUFSBOXDIR/host/bin/mkfs.jffs2
-MKSQUASHFS=$CURDIR/../common/mksquashfs4.0
 SUMTOOL=$TUFSBOXDIR/host/bin/sumtool
-PAD=$CURDIR/../common/pad
+PAD=$TUFSBOXDIR/host/bin/pad
 
 ZIPFILE=$OUTDIR/update_w_fw.zip
 ZIPDATA=${OUTDIR}/kathrein
@@ -25,15 +25,15 @@ OUTDIR=$OUTDIR/kathrein/ufc960
 OUTFILE=$OUTDIR/update.img
 
 if [ ! -e $OUTDIR ]; then
-  mkdir -p $OUTDIR
+	mkdir -p $OUTDIR
 fi
 
 if [ -e $OUTFILE ]; then
-  rm -f $OUTFILE
+	rm -f $OUTFILE
 fi
 
 if [ -e $ZIPFILE ]; then
-  rm -f $ZIPFILE
+	rm -f $ZIPFILE
 fi
 
 #KMAX=0x160000
@@ -79,22 +79,22 @@ rm -f $CURDIR/mtd_var.sum.bin
 SIZE=`stat mtd_kernel.pad.bin -t --format %s`
 SIZE=`printf "0x%x" $SIZE`
 if [[ $SIZE > "${KMAX}" ]]; then
-  echo "KERNEL TO BIG. $SIZE instead of ${KMAX}" > /dev/stderr
-  read -p "Press ENTER to continue..."
+	echo "KERNEL TO BIG. $SIZE instead of ${KMAX}" > /dev/stderr
+	read -p "Press ENTER to continue..."
 fi
 
 SIZE=`stat mtd_root.pad.bin -t --format %s`
 SIZE=`printf "0x%x" $SIZE`
 if [[ $SIZE > "${RMAX}" ]]; then
-  echo "ROOT TO BIG. $SIZE instead of ${RMAX}" > /dev/stderr
-  read -p "Press ENTER to continue..."
+	echo "ROOT TO BIG. $SIZE instead of ${RMAX}" > /dev/stderr
+	read -p "Press ENTER to continue..."
 fi
 
 SIZE=`stat mtd_var.sum.pad.bin -t --format %s`
 SIZE=`printf "0x%x" $SIZE`
 if [[ $SIZE > "${VMAX}" ]]; then
-  echo "VAR TO BIG. $SIZE instead of ${VMAX}" > /dev/stderr
-  read -p "Press ENTER to continue..."
+	echo "VAR TO BIG. $SIZE instead of ${VMAX}" > /dev/stderr
+	read -p "Press ENTER to continue..."
 fi
 
 rm -f $CURDIR/mtd_kernel.pad.bin

@@ -2,17 +2,16 @@
 
 CURDIR=$1
 RELEASEDIR=$2
-
 TMPROOTDIR=$3
-TMPSTORAGEDIR=$4
-TMPKERNELDIR=$5
+TMPKERNELDIR=$4
+TMPSTORAGEDIR=$5
 
 find $RELEASEDIR -mindepth 1 -maxdepth 1 -exec cp -at$TMPROOTDIR -- {} +
 
 if [ ! -e $TMPROOTDIR/dev/mtd0 ]; then
 	cd $TMPROOTDIR/dev/
 	if [ -e $TMPROOTDIR/var/etc/init.d/makedev ]; then
-		$TMPROOTDIR/var/etc/init.d/makedev start 2>/dev/null
+		$TMPROOTDIR/var/etc/init.d/makedev start
 	else
 		$TMPROOTDIR/etc/init.d/makedev start
 	fi

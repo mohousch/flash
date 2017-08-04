@@ -11,7 +11,7 @@ echo "OUTDIR       = $OUTDIR"
 echo "TMPKERNELDIR = $TMPKERNELDIR"
 
 MKFSJFFS2=$TUFSBOXDIR/host/bin/mkfs.jffs2
-FUP=$CURDIR/fup
+FUP=$TUFSBOXDIR/host/bin/fup
 
 OUTFILE=$OUTDIR/update_kernel.ird
 

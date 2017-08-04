@@ -7,21 +7,22 @@ fi
 
 CURDIR=`pwd`
 BASEDIR=$CURDIR/../..
-OUTDIR=$CURDIR/out
+
 TUFSBOXDIR=$BASEDIR/tufsbox
-RELEASEDIR=$TUFSBOXDIR/release
 TMPDIR=$CURDIR/tmp
 TMPROOTDIR=$TMPDIR/ROOT
+OUTDIR=$CURDIR/out
+RELEASEDIR=$TUFSBOXDIR/release
 
 if [ -e $TMPDIR ]; then
 	rm -rf $TMPDIR/*
 fi
 
-echo "-----------------------------------------------------------------------"
-echo "Creating image..."
-
 mkdir -p $TMPDIR
 mkdir -p $TMPROOTDIR
+
+echo "-----------------------------------------------------------------------"
+echo "Creating image..."
 
 cp -a $RELEASEDIR/* $TMPROOTDIR
 cp $RELEASEDIR/.version $TMPROOTDIR
@@ -66,11 +67,11 @@ cp $TFINSTALLERDIR/uImage $CURDIR/out/
 
 UIMAGESIZE=`stat -c %s $TFINSTALLERDIR/uImage`
 if [ "$UIMAGESIZE" == "0" -o "$UIMAGESIZE" == "" ]; then
-  echo -e "\033[01;31m"
-  echo "!!! WARNING: UIMAGE SIZE IS ZERO OR MISSING !!!"
-  echo "RUN MAKE tfinstaller FIRST !!!"
-  echo  "-----------------------------------------------------------------------"
-  echo -e "\033[00m"
+	echo -e "\033[01;31m"
+	echo "!!! WARNING: UIMAGE SIZE IS ZERO OR MISSING !!!"
+	echo "RUN MAKE tfinstaller FIRST !!!"
+	echo  "-----------------------------------------------------------------------"
+	echo -e "\033[00m"
 fi
 
 echo "-----------------------------------------------------------------------"
@@ -82,34 +83,29 @@ cd -
 zip -j $OUTFILE.zip $OUTDIR/Enigma_Installer.ini $OUTDIR/Enigma_Installer.tfd $OUTDIR/uImage $OUTDIR/rootfs.tar.gz
 
 echo "-----------------------------------------------------------------------"
+
 AUDIOELFSIZE=`stat -c %s $TMPROOTDIR/lib/firmware/audio.elf`
 if [ "$AUDIOELFSIZE" == "0" -o "$AUDIOELFSIZE" == "" ]; then
-  echo -e "\033[01;31m"
-  echo "!!! WARNING: AUDIOELF SIZE IS ZERO OR MISSING !!!"
-  echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
-  echo  "-----------------------------------------------------------------------"
-  echo -e "\033[00m"
-fi
-VIDEOELFSIZE=`stat -c %s $TMPROOTDIR/lib/firmware/audio.elf`
-if [ "$VIDEOELFSIZE" == "0" -o "$VIDEOELFSIZE" == "" ]; then
-  echo -e "\033[01;31m"
-  echo "!!! WARNING: VIDEOELF SIZE IS ZERO OR MISSING !!!"
-  echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
-  echo  "-----------------------------------------------------------------------"
-  echo -e "\033[00m"
-fi
-if [ ! -e $TMPROOTDIR/dev/mtd0 ]; then
-  echo -e "\033[01;31m"
-  echo "!!! WARNING: DEVS ARE MISSING !!!"
-  echo "IF YOUR ARE CREATING THE ROOT PART MAKE SURE THAT YOU USE A CORRECT DEV.TAR"
-  echo "-----------------------------------------------------------------------"
-  echo -e "\033[00m"
+	echo -e "\033[01;31m"
+	echo "!!! WARNING: AUDIOELF SIZE IS ZERO OR MISSING !!!"
+	echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
+	echo -e "\033[00m"
 fi
 
-echo ""
-echo ""
-echo ""
-echo "-----------------------------------------------------------------------"
+VIDEOELFSIZE=`stat -c %s $TMPROOTDIR/lib/firmware/audio.elf`
+if [ "$VIDEOELFSIZE" == "0" -o "$VIDEOELFSIZE" == "" ]; then
+	echo -e "\033[01;31m"
+	echo "!!! WARNING: VIDEOELF SIZE IS ZERO OR MISSING !!!"
+	echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
+	echo -e "\033[00m"
+fi
+
+if [ ! -e $TMPROOTDIR/dev/mtd0 ]; then
+	echo -e "\033[01;31m"
+	echo "!!! WARNING: DEVS ARE MISSING !!!"
+	echo "IF YOUR ARE CREATING THE ROOT PART MAKE SURE THAT YOU USE A CORRECT DEV.TAR"
+	echo -e "\033[00m"
+fi
 
 rm -f $OUTDIR/Enigma_Installer.ini
 rm -f $OUTDIR/Enigma_Installer.tfd
@@ -118,4 +114,4 @@ rm -f $OUTDIR/rootfs.tar.gz
 rm -rf $TMPDIR
 
 echo "Flashimage created:"
-ls -o $OUTDIR | awk -F " " '{print $7}'
+echo ""

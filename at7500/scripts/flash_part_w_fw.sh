@@ -3,23 +3,23 @@
 CURDIR=$1
 TUFSBOXDIR=$2
 OUTDIR=$3
-TMPKERNELDIR=$4
-TMPFWDIR=$5
-TMPROOTDIR=$6
+TMPROOTDIR=$4
+TMPKERNELDIR=$5
+TMPFWDIR=$6
 TMPEXTDIR=$7
 
 echo "CURDIR       = $CURDIR"
 echo "TUFSBOXDIR   = $TUFSBOXDIR"
 echo "OUTDIR       = $OUTDIR"
+echo "TMPROOTDIR   = $TMPROOTDIR"
 echo "TMPKERNELDIR = $TMPKERNELDIR"
 echo "TMPFWDIR     = $TMPFWDIR"
-echo "TMPROOTDIR   = $TMPROOTDIR"
 echo "TMPEXTDIR    = $TMPEXTDIR"
 
 MKFSJFFS2=$TUFSBOXDIR/host/bin/mkfs.jffs2
 SUMTOOL=$TUFSBOXDIR/host/bin/sumtool
-PAD=$CURDIR/../common/pad
-FUP=$CURDIR/fup
+PAD=$TUFSBOXDIR/host/bin/pad
+FUP=$TUFSBOXDIR/host/bin/fup
 
 HOST=`cat $TMPEXTDIR/etc/hostname`
 
@@ -33,12 +33,11 @@ if [ ! -e $OUTDIR ]; then
 fi
 
 if [ -e $OUTFILE ]; then
-  rm -f $OUTFILE
-  rm -f $OUTFILE.md5
+	rm -f $OUTFILE
+	rm -f $OUTFILE.md5
 fi
 
 cp $TMPKERNELDIR/uImage $OUTDIR/uImage.bin
-
 # Create a jffs2 partition for fw's
 # Size 6.875  MB = -p0x6E0000
 # Folder which contains fw's is -r fw
@@ -47,18 +46,18 @@ cp $TMPKERNELDIR/uImage $OUTDIR/uImage.bin
 # ./fw
 # ./fw/audio.elf
 # ./fw/video.elf
-echo "MKFSJFFS2 -qUfv -p0x6E0000 -e0x20000 -r $TMPFWDIR -o $OUTDIR/mtd_fw.bin"
-$MKFSJFFS2 -qUfv -p0x6E0000 -e0x20000 -r $TMPFWDIR -o $OUTDIR/mtd_fw.bin > /dev/null
-echo "SUMTOOL -v -p -e 0x20000 -i $OUTDIR/mtd_fw.bin -o $OUTDIR/mtd_fw.sum.bin"
-$SUMTOOL -v -p -e 0x20000 -i $OUTDIR/mtd_fw.bin -o $OUTDIR/mtd_fw.sum.bin > /dev/null
+echo "MKFSJFFS2 -qUf -p0x6E0000 -e0x20000 -r $TMPFWDIR -o $OUTDIR/mtd_fw.bin"
+$MKFSJFFS2 -qUf -p0x6E0000 -e0x20000 -r $TMPFWDIR -o $OUTDIR/mtd_fw.bin > /dev/null
+echo "SUMTOOL -p -e 0x20000 -i $OUTDIR/mtd_fw.bin -o $OUTDIR/mtd_fw.sum.bin"
+$SUMTOOL -p -e 0x20000 -i $OUTDIR/mtd_fw.bin -o $OUTDIR/mtd_fw.sum.bin > /dev/null
 echo "PAD 0x6E0000 $OUTDIR/mtd_fw.sum.bin $OUTDIR/mtd_fw.sum.pad.bin"
 $PAD 0x6E0000 $OUTDIR/mtd_fw.sum.bin $OUTDIR/mtd_fw.sum.pad.bin
 
 # Create a jffs2 partition for ext
 # 0x01220000 - 0x01DFFFFF (11.875 MB)
 # Should be p0xBE0000 but due to a bug in stock uboot the size had to be decreased
-$MKFSJFFS2 -qUfv -p0xBA0000 -e0x20000 -r $TMPEXTDIR -o $OUTDIR/mtd_ext.bin
-$SUMTOOL -v -p -e 0x20000 -i $OUTDIR/mtd_ext.bin -o $OUTDIR/mtd_ext.sum.bin
+$MKFSJFFS2 -qUf -p0xBA0000 -e0x20000 -r $TMPEXTDIR -o $OUTDIR/mtd_ext.bin
+$SUMTOOL -p -e 0x20000 -i $OUTDIR/mtd_ext.bin -o $OUTDIR/mtd_ext.sum.bin
 $PAD 0xBA0000 $OUTDIR/mtd_ext.sum.bin $OUTDIR/mtd_ext.sum.pad.bin
 
 # Create a jffs2 partition for root
@@ -69,10 +68,10 @@ $PAD 0xBA0000 $OUTDIR/mtd_ext.sum.bin $OUTDIR/mtd_ext.sum.pad.bin
 # ./release
 # ./release/etc
 # ./release/usr
-echo "MKFSJFFS2 -qUfv -p0x1E00000 -e0x20000 -r $TMPROOTDIR -o $OUTDIR/mtd_root.bin"
-$MKFSJFFS2 -qUfv -p0x1E00000 -e0x20000 -r $TMPROOTDIR -o $OUTDIR/mtd_root.bin > /dev/null
-echo "SUMTOOL -v -p -e 0x20000 -i $OUTDIR/mtd_root.bin -o $OUTDIR/mtd_root.sum.bin"
-$SUMTOOL -v -p -e 0x20000 -i $OUTDIR/mtd_root.bin -o $OUTDIR/mtd_root.sum.bin > /dev/null
+echo "MKFSJFFS2 -qUf -p0x1E00000 -e0x20000 -r $TMPROOTDIR -o $OUTDIR/mtd_root.bin"
+$MKFSJFFS2 -qUf -p0x1E00000 -e0x20000 -r $TMPROOTDIR -o $OUTDIR/mtd_root.bin > /dev/null
+echo "SUMTOOL -p -e 0x20000 -i $OUTDIR/mtd_root.bin -o $OUTDIR/mtd_root.sum.bin"
+$SUMTOOL -p -e 0x20000 -i $OUTDIR/mtd_root.bin -o $OUTDIR/mtd_root.sum.bin > /dev/null
 echo "PAD 0x1E00000 $OUTDIR/mtd_root.sum.bin $OUTDIR/mtd_root.sum.pad.bin"
 $PAD 0x1E00000 $OUTDIR/mtd_root.sum.bin $OUTDIR/mtd_root.sum.pad.bin
 

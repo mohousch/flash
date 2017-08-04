@@ -2,11 +2,10 @@
 
 CURDIR=$1
 RELEASEDIR=$2
-
 TMPROOTDIR=$3
-TMPEXTDIR=$4
-TMPKERNELDIR=$5
-TMPFWDIR=$6
+TMPKERNELDIR=$4
+TMPFWDIR=$5
+TMPEXTDIR=$6
 
 find $RELEASEDIR -mindepth 1 -maxdepth 1 -exec cp -at$TMPROOTDIR -- {} +
 
@@ -20,9 +19,11 @@ if [ ! -e $TMPROOTDIR/dev/mtd0 ]; then
 	cd -
 fi
 
-mv $TMPROOTDIR/var/* $TMPEXTDIR
+# --- BOOT ---
 mv $TMPROOTDIR/boot/uImage $TMPKERNELDIR/uImage
 rm -fr $TMPROOTDIR/boot
+
+mv $TMPROOTDIR/var/* $TMPEXTDIR
 mv $TMPROOTDIR/lib/firmware/* $TMPFWDIR
 
 # mini-rcS and inittab

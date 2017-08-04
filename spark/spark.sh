@@ -9,12 +9,10 @@ CURDIR=`pwd`
 BASEDIR=$CURDIR/../..
 
 TUFSBOXDIR=$BASEDIR/tufsbox
-
 SCRIPTDIR=$CURDIR/scripts
 TMPDIR=$CURDIR/tmp
 TMPROOTDIR=$TMPDIR/ROOT
 TMPKERNELDIR=$TMPDIR/KERNEL
-
 OUTDIR=$CURDIR/out
 
 if [ -e $TMPDIR ]; then
@@ -25,55 +23,42 @@ mkdir -p $TMPDIR
 mkdir -p $TMPROOTDIR
 mkdir -p $TMPKERNELDIR
 
-echo "This script creates flashable images for Spark"
-echo "Author: Schischu, BPanther"
-echo "Date: 05-05-2013"
 echo "-----------------------------------------------------------------------"
 echo "It's expected that an image was already build prior to this execution!"
-echo "-----------------------------------------------------------------------"
-
-$BASEDIR/flash/common/common.sh $BASEDIR/flash/common/
-
 echo "-----------------------------------------------------------------------"
 echo "Checking target..."
 $SCRIPTDIR/prepare_root.sh $CURDIR $TUFSBOXDIR/release $TMPROOTDIR $TMPKERNELDIR
 echo "Root prepared"
 echo "-----------------------------------------------------------------------"
 echo "Creating flash image..."
-$SCRIPTDIR/flash_part_w_fw.sh $CURDIR $TUFSBOXDIR $OUTDIR $TMPKERNELDIR $TMPROOTDIR
+$SCRIPTDIR/flash_part_w_fw.sh $CURDIR $TUFSBOXDIR $OUTDIR $TMPROOTDIR $TMPKERNELDIR
 echo "-----------------------------------------------------------------------"
+
 AUDIOELFSIZE=`stat -c %s $TMPROOTDIR/lib/firmware/audio.elf`
 if [ "$AUDIOELFSIZE" == "0" -o "$AUDIOELFSIZE" == "" ]; then
-  echo -e "\033[01;31m"
-  echo "!!! WARNING: AUDIOELF SIZE IS ZERO OR MISSING !!!"
-  echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
-  echo  "-----------------------------------------------------------------------"
-  echo -e "\033[00m"
+	echo -e "\033[01;31m"
+	echo "!!! WARNING: AUDIOELF SIZE IS ZERO OR MISSING !!!"
+	echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
+	echo -e "\033[00m"
 fi
+
 VIDEOELFSIZE=`stat -c %s $TMPROOTDIR/lib/firmware/video.elf`
 if [ "$VIDEOELFSIZE" == "0" -o "$VIDEOELFSIZE" == "" ]; then
-  echo -e "\033[01;31m"
-  echo "!!! WARNING: VIDEOELF SIZE IS ZERO OR MISSING !!!"
-  echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
-  echo  "-----------------------------------------------------------------------"
-  echo -e "\033[00m"
+	echo -e "\033[01;31m"
+	echo "!!! WARNING: VIDEOELF SIZE IS ZERO OR MISSING !!!"
+	echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"
+	echo -e "\033[00m"
 fi
+
 if [ ! -e $TMPROOTDIR/dev/mtd0 ]; then
-  echo -e "\033[01;31m"
-  echo "!!! WARNING: DEVS ARE MISSING !!!"
-  echo "IF YOUR ARE CREATING THE ROOT PART MAKE SURE THAT YOU USE A CORRECT DEV.TAR"
-  echo "-----------------------------------------------------------------------"
-  echo -e "\033[00m"
+	echo -e "\033[01;31m"
+	echo "!!! WARNING: DEVS ARE MISSING !!!"
+	echo "IF YOUR ARE CREATING THE ROOT PART MAKE SURE THAT YOU USE A CORRECT DEV.TAR"
+	echo -e "\033[00m"
 fi
 
-echo ""
-echo ""
-echo ""
-echo "-----------------------------------------------------------------------"
 echo "Flashimage created:"
-ls -o $OUTDIR | awk -F " " '{print $7}'
-
-echo "-----------------------------------------------------------------------"
+echo ""
 echo "To flash the created image rename the *.img file to e2jffs2.img and "
 echo "copy it and the uImage to the enigma2 folder (/enigma2) of your usb drive."
 echo "Before flashing make sure that enigma2 is the default system on your box."
