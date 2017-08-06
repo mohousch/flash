@@ -25,6 +25,7 @@ mkdir -p $TMPROOTDIR
 mkdir -p $TMPKERNELDIR
 mkdir -p $TMPFWDIR
 
+echo ""
 echo "-----------------------------------------------------------------------"
 echo "It's expected that an image was already build prior to this execution!"
 echo "-----------------------------------------------------------------------"

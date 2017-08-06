@@ -21,6 +21,7 @@ fi
 mkdir -p $TMPDIR
 mkdir -p $TMPROOTDIR
 
+echo ""
 echo "-----------------------------------------------------------------------"
 echo "Creating image..."
 
