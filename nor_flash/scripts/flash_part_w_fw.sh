@@ -53,7 +53,7 @@ case "$HOST" in
 		SIZE_VAR=0x2E0000
 		ERASE_SIZE=0x10000
 	;;
-	fortis) echo "Creating flash image for $HOST..."
+	fortis_hdbox) echo "Creating flash image for $HOST..."
 		SIZE_KERNEL=0x200000
 		SIZE_ROOT=0xC00000
 		SIZE_VAR=0x11C0000
@@ -65,7 +65,7 @@ case "$HOST" in
 		SIZE_VAR=0x11C0000
 		ERASE_SIZE=0x20000
 	;;
-	cuberevo-mini2) echo "Creating flash image for $HOST..."
+	cuberevo_mini2) echo "Creating flash image for $HOST..."
 		SIZE_KERNEL=0x220000
 		SIZE_ROOT=0x1380000
 		SIZE_VAR=0xA00000
@@ -85,7 +85,7 @@ case "$HOST" in
 		OUTFILE_OU=$OUTDIR/mtd234.img
 		OUTFILE=$OUTDIR/usb_update.img
 	;;
-	cuberevo-2000hd) echo "Creating flash image for $HOST..."
+	cuberevo_2000hd) echo "Creating flash image for $HOST..."
 		SIZE_KERNEL=0x220000
 		SIZE_ROOT=0x1380000
 		SIZE_VAR=0xA00000
@@ -95,7 +95,7 @@ case "$HOST" in
 		OUTFILE_OU=$OUTDIR/mtd234.img
 		OUTFILE=$OUTDIR/usb_update.img
 	;;
-	cuberevo-3000hd) echo "Creating flash image for $HOST..."
+	cuberevo_3000hd) echo "Creating flash image for $HOST..."
 		SIZE_KERNEL=0x220000
 		SIZE_ROOT=0x1380000
 		SIZE_VAR=0xA00000
@@ -135,7 +135,7 @@ $PAD $SIZE_VAR $CURDIR/mtd_var.sum.bin $CURDIR/mtd_var.sum.pad.bin
 
 # --- update.img ---
 #Merge all parts together
-if [ "$HOST" == "cuberevo-mini2" -o "$HOST" == "cuberevo" -o "$HOST" == "cuberevo-2000hd" -o "$HOST" == "cuberevo-3000hd" ]; then
+if [ "$HOST" == "cuberevo_mini2" -o "$HOST" == "cuberevo" -o "$HOST" == "cuberevo_2000hd" -o "$HOST" == "cuberevo_3000hd" ]; then
 	cat $CURDIR/mtd_kernel.pad.bin >> $OUTDIR/out_tmp.img
 	cat $CURDIR/mtd_root.pad.bin >> $OUTDIR/out_tmp.img
 	cat $CURDIR/mtd_var.sum.pad.bin >> $OUTDIR/out_tmp.img
@@ -182,7 +182,7 @@ rm -f $CURDIR/mtd_root.pad.bin
 rm -f $CURDIR/mtd_var.sum.pad.bin
 
 md5sum -b $OUTFILE | awk -F' ' '{print $1}' > $OUTFILE.md5
-if [ "$HOST" == "cuberevo-mini2" -o "$HOST" == "cuberevo" -o "$HOST" == "cuberevo-2000hd" -o "$HOST" == "cuberevo-3000hd" ]; then
+if [ "$HOST" == "cuberevo_mini2" -o "$HOST" == "cuberevo" -o "$HOST" == "cuberevo_2000hd" -o "$HOST" == "cuberevo_3000hd" ]; then
 	zip -j $OUTFILE_Z.zip $OUTFILE $OUTFILE.md5 $OUTFILE_OU $OUTFILE_OU.md5
 	rm -f $OUTFILE_OU
 	rm -f $OUTFILE_OU.md5
