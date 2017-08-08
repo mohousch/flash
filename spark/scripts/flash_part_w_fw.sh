@@ -18,14 +18,14 @@ SUMTOOL=$TUFSBOXDIR/host/bin/sumtool
 PAD=$TUFSBOXDIR/host/bin/pad
 
 if [ -f $TMPROOTDIR/etc/hostname ]; then
-	HOST=`cat $TMPROOTDIR/etc/hostname`
+	BOXTYPE=`cat $TMPROOTDIR/etc/hostname`
 elif [ -f $TMPROOTDIR/var/etc/hostname ]; then
-	HOST=`cat $TMPROOTDIR/var/etc/hostname`
+	BOXTYPE=`cat $TMPROOTDIR/var/etc/hostname`
 fi
 
 . $CURDIR/../common/gitversion.sh $CURDIR
 
-OUTFILE=$OUTDIR/$HOST$gitversion
+OUTFILE=$OUTDIR/$BOXTYPE$gitversion
 
 if [ ! -e $OUTDIR ]; then
 	mkdir $OUTDIR

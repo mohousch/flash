@@ -48,14 +48,14 @@ if [ ! -e $TMPROOTDIR/dev/mtd0 ]; then
 fi
 
 if [ -f $TMPROOTDIR/etc/hostname ]; then
-	HOST=`cat $TMPROOTDIR/etc/hostname`
+	BOXTYPE=`cat $TMPROOTDIR/etc/hostname`
 elif [ -f $TMPROOTDIR/var/etc/hostname ]; then
-	HOST=`cat $TMPROOTDIR/var/etc/hostname`
+	BOXTYPE=`cat $TMPROOTDIR/var/etc/hostname`
 fi
 
 . $CURDIR/../common/gitversion.sh $CURDIR
 
-OUTFILE=$OUTDIR/$HOST$gitversion
+OUTFILE=$OUTDIR/$BOXTYPE$gitversion
 
 TFINSTALLERDIR=$BASEDIR/tfinstaller
 

@@ -20,15 +20,15 @@ SUMTOOL=$TUFSBOXDIR/host/bin/sumtool
 PAD=$TUFSBOXDIR/host/bin/pad
 
 if [ -f $TMPROOTDIR/etc/hostname ]; then
-	HOST=`cat $TMPROOTDIR/etc/hostname`
+	BOXTYPE=`cat $TMPROOTDIR/etc/hostname`
 elif [ -f $TMPVARDIR/etc/hostname ]; then
-	HOST=`cat $TMPVARDIR/etc/hostname`
+	BOXTYPE=`cat $TMPVARDIR/etc/hostname`
 fi
 
 . $CURDIR/../common/gitversion.sh $CURDIR
 
 OUTFILE=$OUTDIR/miniFLASH.img
-OUTFILE_Z=$OUTDIR/$HOST$gitversion
+OUTFILE_Z=$OUTDIR/$BOXTYPE$gitversion
 
 if [ ! -e $OUTDIR ]; then
   mkdir $OUTDIR
@@ -40,32 +40,32 @@ if [ -e $OUTFILE ]; then
 fi
 
 # Definition size of kernel, root, var and erase size
-case "$HOST" in
-	ufs910) echo "Creating flash image for $HOST..."
+case "$BOXTYPE" in
+	ufs910) echo "Creating flash image for $BOXTYPE..."
 		SIZE_KERNEL=0x190000
 		SIZE_ROOT=0xB40000
 		SIZE_VAR=0x2F0000
 		ERASE_SIZE=0x10000
 	;;
-	ufs922) echo "Creating flash image for $HOST..."
+	ufs922) echo "Creating flash image for $BOXTYPE..."
 		SIZE_KERNEL=0x1A0000
 		SIZE_ROOT=0xB40000
 		SIZE_VAR=0x2E0000
 		ERASE_SIZE=0x10000
 	;;
-	fortis_hdbox) echo "Creating flash image for $HOST..."
+	fortis_hdbox) echo "Creating flash image for $BOXTYPE..."
 		SIZE_KERNEL=0x200000
 		SIZE_ROOT=0xC00000
 		SIZE_VAR=0x11C0000
 		ERASE_SIZE=0x20000
 	;;
-	octagon1008) echo "Creating flash image for $HOST..."
+	octagon1008) echo "Creating flash image for $BOXTYPE..."
 		SIZE_KERNEL=0x200000
 		SIZE_ROOT=0xC00000
 		SIZE_VAR=0x11C0000
 		ERASE_SIZE=0x20000
 	;;
-	cuberevo_mini2) echo "Creating flash image for $HOST..."
+	cuberevo_mini2) echo "Creating flash image for $BOXTYPE..."
 		SIZE_KERNEL=0x220000
 		SIZE_ROOT=0x1380000
 		SIZE_VAR=0xA00000
@@ -75,7 +75,7 @@ case "$HOST" in
 		OUTFILE_OU=$OUTDIR/mtd234.img
 		OUTFILE=$OUTDIR/usb_update.img
 	;;
-	cuberevo) echo "Creating flash image for $HOST..."
+	cuberevo) echo "Creating flash image for $BOXTYPE..."
 		SIZE_KERNEL=0x220000
 		SIZE_ROOT=0x1380000
 		SIZE_VAR=0xA00000
@@ -85,7 +85,7 @@ case "$HOST" in
 		OUTFILE_OU=$OUTDIR/mtd234.img
 		OUTFILE=$OUTDIR/usb_update.img
 	;;
-	cuberevo_2000hd) echo "Creating flash image for $HOST..."
+	cuberevo_2000hd) echo "Creating flash image for $BOXTYPE..."
 		SIZE_KERNEL=0x220000
 		SIZE_ROOT=0x1380000
 		SIZE_VAR=0xA00000
@@ -95,7 +95,7 @@ case "$HOST" in
 		OUTFILE_OU=$OUTDIR/mtd234.img
 		OUTFILE=$OUTDIR/usb_update.img
 	;;
-	cuberevo_3000hd) echo "Creating flash image for $HOST..."
+	cuberevo_3000hd) echo "Creating flash image for $BOXTYPE..."
 		SIZE_KERNEL=0x220000
 		SIZE_ROOT=0x1380000
 		SIZE_VAR=0xA00000
@@ -105,7 +105,7 @@ case "$HOST" in
 		OUTFILE_OU=$OUTDIR/mtd234.img
 		OUTFILE=$OUTDIR/usb_update.img
 	;;
-	*) echo "Creating flash image for <$HOST -> ufs910>..."
+	*) echo "Creating flash image for <$BOXTYPE -> ufs910>..."
 		SIZE_KERNEL=0x190000
 		SIZE_ROOT=0xB40000
 		SIZE_VAR=0x2F0000
@@ -135,7 +135,7 @@ $PAD $SIZE_VAR $CURDIR/mtd_var.sum.bin $CURDIR/mtd_var.sum.pad.bin
 
 # --- update.img ---
 #Merge all parts together
-if [ "$HOST" == "cuberevo_mini2" -o "$HOST" == "cuberevo" -o "$HOST" == "cuberevo_2000hd" -o "$HOST" == "cuberevo_3000hd" ]; then
+if [ "$BOXTYPE" == "cuberevo_mini2" -o "$BOXTYPE" == "cuberevo" -o "$BOXTYPE" == "cuberevo_2000hd" -o "$BOXTYPE" == "cuberevo_3000hd" ]; then
 	cat $CURDIR/mtd_kernel.pad.bin >> $OUTDIR/out_tmp.img
 	cat $CURDIR/mtd_root.pad.bin >> $OUTDIR/out_tmp.img
 	cat $CURDIR/mtd_var.sum.pad.bin >> $OUTDIR/out_tmp.img
@@ -152,7 +152,7 @@ else
 fi
 
 echo "-----------------------------------------------------------------------"
-echo "flash size results for : $HOST"
+echo "flash size results for : $BOXTYPE"
 SIZE=`stat uImage -t --format %s`
 SIZE=`printf "0x%X" $SIZE`
 echo -e "\e[32mKernel = $SIZE Maximum= $SIZE_KERNEL\e[0m"
@@ -196,7 +196,7 @@ rm -f $CURDIR/mtd_root.pad.bin
 rm -f $CURDIR/mtd_var.sum.pad.bin
 
 md5sum -b $OUTFILE | awk -F' ' '{print $1}' > $OUTFILE.md5
-if [ "$HOST" == "cuberevo_mini2" -o "$HOST" == "cuberevo" -o "$HOST" == "cuberevo_2000hd" -o "$HOST" == "cuberevo_3000hd" ]; then
+if [ "$BOXTYPE" == "cuberevo_mini2" -o "$BOXTYPE" == "cuberevo" -o "$BOXTYPE" == "cuberevo_2000hd" -o "$BOXTYPE" == "cuberevo_3000hd" ]; then
 	zip -j $OUTFILE_Z.zip $OUTFILE $OUTFILE.md5 $OUTFILE_OU $OUTFILE_OU.md5
 	rm -f $OUTFILE_OU
 	rm -f $OUTFILE_OU.md5

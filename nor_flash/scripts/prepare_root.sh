@@ -26,9 +26,9 @@ rm -fr $TMPROOTDIR/boot
 mv $TMPROOTDIR/var/* $TMPSTORAGEDIR/
 
 if [ -f $TMPROOTDIR/etc/hostname ]; then
-	HOST=`cat $TMPROOTDIR/etc/hostname`
+	BOXTYPE=`cat $TMPROOTDIR/etc/hostname`
 elif [ -f $TMPSTORAGEDIR/etc/hostname ]; then
-	HOST=`cat $TMPSTORAGEDIR/etc/hostname`
+	BOXTYPE=`cat $TMPSTORAGEDIR/etc/hostname`
 fi
 
 # mini-rcS and inittab
@@ -36,7 +36,7 @@ rm -f $TMPROOTDIR/etc
 mkdir -p $TMPROOTDIR/etc/init.d
 echo "#!/bin/sh" > $TMPROOTDIR/etc/init.d/rcS
 echo "mount -n -t proc proc /proc" >> $TMPROOTDIR/etc/init.d/rcS
-if [ "$HOST" == "cuberevo_mini2" -o "$HOST" == "cuberevo" -o "$HOST" == "cuberevo_2000hd" -o "$HOST" == "cuberevo_3000hd" ]; then
+if [ "$BOXTYPE" == "cuberevo_mini2" -o "$BOXTYPE" == "cuberevo" -o "$BOXTYPE" == "cuberevo_2000hd" -o "$BOXTYPE" == "cuberevo_3000hd" ]; then
 	echo "mount -t jffs2 -o rw,noatime,nodiratime /dev/mtdblock4 /var" >> $TMPROOTDIR/etc/init.d/rcS
 else
 	echo "mount -n -t jffs2 -o rw,noatime,nodiratime /dev/mtdblock3 /var" >> $TMPROOTDIR/etc/init.d/rcS

@@ -21,12 +21,12 @@ SUMTOOL=$TUFSBOXDIR/host/bin/sumtool
 PAD=$TUFSBOXDIR/host/bin/pad
 FUP=$TUFSBOXDIR/host/bin/fup
 
-HOST=`cat $TMPEXTDIR/etc/hostname`
+BOXTYPE=`cat $TMPEXTDIR/etc/hostname`
 
 . $CURDIR/../common/gitversion.sh $CURDIR
 
 OUTFILE=$OUTDIR/update_w_fw.ird
-OUTFILE_Z=$OUTDIR/$HOST$gitversion
+OUTFILE_Z=$OUTDIR/$BOXTYPE$gitversion
 
 if [ ! -e $OUTDIR ]; then
   mkdir $OUTDIR
