@@ -31,12 +31,12 @@ OUTFILE=$OUTDIR/miniFLASH.img
 OUTFILE_Z=$OUTDIR/$BOXTYPE$gitversion
 
 if [ ! -e $OUTDIR ]; then
-  mkdir $OUTDIR
+	mkdir $OUTDIR
 fi
 
 if [ -e $OUTFILE ]; then
-  rm -f $OUTFILE
-  rm -f $OUTFILE.md5
+	rm -f $OUTFILE
+	rm -f $OUTFILE.md5
 fi
 
 # Definition size of kernel, root, var and erase size
