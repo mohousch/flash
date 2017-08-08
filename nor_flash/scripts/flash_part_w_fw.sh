@@ -151,6 +151,20 @@ else
 	cat $CURDIR/mtd_var.sum.pad.bin >> $OUTFILE
 fi
 
+echo "-----------------------------------------------------------------------"
+echo "flash size results for : $HOST"
+SIZE=`stat uImage -t --format %s`
+SIZE=`printf "0x%X" $SIZE`
+echo -e "\e[32mKernel = $SIZE Maximum= $SIZE_KERNEL\e[0m"
+
+SIZE=`stat mtd_var.sum.bin -t --format %s`
+SIZE=`printf "0x%X" $SIZE`
+echo -e "\e[32mVar    = $SIZE Maximum= $SIZE_VAR\e[0m"
+
+SIZE=`stat mtd_root.bin -t --format %s`
+SIZE=`printf "0x%X" $SIZE`
+echo -e "\e[32mRoot   = $SIZE Maximum= $SIZE_ROOT\e[0m"
+
 rm -f $CURDIR/uImage
 rm -f $CURDIR/mtd_root.bin
 rm -f $CURDIR/mtd_var.bin
