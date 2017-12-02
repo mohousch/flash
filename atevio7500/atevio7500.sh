@@ -61,6 +61,8 @@ if [ ! -e $TMPROOTDIR/dev/mtd0 ]; then
 	echo -e "\033[00m"
 fi
 
+[ "$1" != "" ] && chown -R $1:users $OUTDIR/
+
 echo "Flashimage created:"
 echo ""
 echo "To flash the created image copy the *.ird file to the root (/) of your usb drive."

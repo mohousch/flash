@@ -114,5 +114,7 @@ rm -f $OUTDIR/uImage
 rm -f $OUTDIR/rootfs.tar.gz
 rm -rf $TMPDIR
 
+[ "$1" != "" ] && chown -R $1:users $OUTDIR/
+
 echo "Flashimage created:"
 echo ""
