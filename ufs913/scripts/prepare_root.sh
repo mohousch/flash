@@ -16,6 +16,8 @@ if [ ! -e $TMPROOTDIR/dev/mtd0 ]; then
 	else
 		$TMPROOTDIR/etc/init.d/makedev start
 	fi
+	$TMPROOTDIR/sbin/MAKEDEV ramzswap
+	$TMPROOTDIR/sbin/MAKEDEV tundev
 	cd -
 fi
 
