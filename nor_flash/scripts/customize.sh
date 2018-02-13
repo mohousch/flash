@@ -28,13 +28,13 @@ if [ "$BOXTYPE" == "ufs910" -o "$BOXTYPE" == "ufs922" ];then
 	rm -f $TMPROOTDIR/usr/lib/libntfs-3g.so*
 	rm -rf $TMPROOTDIR/usr/lib/ntfs-3g
 
-	find $TMPROOTDIR/usr/share/tuxbox/neutrino/httpd/languages -not -name Deutsch -not -name English -type f -delete
-	rm -f $TMPROOTDIR/usr/share/tuxbox/neutrino/icons/dutch.png
-	find $TMPROOTDIR/usr/share/tuxbox/neutrino/license -not -name deutsch.license -not -name english.license -type f -delete
-	find $TMPROOTDIR/usr/share/tuxbox/neutrino/locale -not -name deutsch.locale -not -name english.locale -not -name deutsch.po -not -name english.po -type f -delete
+	find $TMPROOTDIR/share/tuxbox/neutrino/httpd/languages -not -name Deutsch -not -name English -type f -delete
+	rm -f $TMPROOTDIR/share/tuxbox/neutrino/icons/dutch.png
+	find $TMPROOTDIR/share/tuxbox/neutrino/license -not -name deutsch.license -not -name english.license -type f -delete
+	find $TMPROOTDIR/share/tuxbox/neutrino/locale -not -name deutsch.locale -not -name english.locale -not -name deutsch.po -not -name english.po -type f -delete
 fi
 
 if [ "$BOXTYPE" == "ufs910" -o "$BOXTYPE" == "ufs922" -o "$BOXTYPE" == "fortis_hdbox" -o "$BOXTYPE" == "octagon1008" ];then
 	rm -f $TMPROOTDIR/usr/bin/xupnpd
-	rm -rf $TMPROOTDIR/usr/share/xupnpd
+	rm -rf $TMPROOTDIR/share/xupnpd
 fi
