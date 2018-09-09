@@ -18,6 +18,7 @@ rm -f $TMPROOTDIR/lib/modules/cpu_frequ.ko
 if [ "$BOXTYPE" == "ufs910" -o "$BOXTYPE" == "ufs922" ];then
 	rm -f $TMPROOTDIR/lib/modules/cifs.ko
 
+	rm -f $TMPROOTDIR/usr/bin/curl
 	rm -f $TMPROOTDIR/usr/bin/dvbsnoop
 
 	rm -f $TMPROOTDIR/usr/bin/udpxy
