@@ -9,6 +9,8 @@ elif [ -d $CURDIR/../../build_source/libstb-hal-max ]; then
 	HAL_REV=_HAL-rev`cd $CURDIR/../../build_source/libstb-hal-max && git log | grep "^commit" | wc -l`-max
 elif [ -d $CURDIR/../../build_source/libstb-hal-tangos ]; then
 	HAL_REV=_HAL-rev`cd $CURDIR/../../build_source/libstb-hal-tangos && git log | grep "^commit" | wc -l`-tangos
+elif [ -d $CURDIR/../../build_source/neutrino-hd2 ]; then
+	HAL_REV=
 else
 	HAL_REV=_HAL-revXXX
 fi
@@ -19,6 +21,8 @@ elif [ -d $CURDIR/../../build_source/neutrino-mp-max ]; then
 	NMP_REV=_NMP-rev`cd $CURDIR/../../build_source/neutrino-mp-max && git log | grep "^commit" | wc -l`-max
 elif [ -d $CURDIR/../../build_source/neutrino-mp-tangos ]; then
 	NMP_REV=_NMP-rev`cd $CURDIR/../../build_source/neutrino-mp-tangos && git log | grep "^commit" | wc -l`-tangos
+elif [ -d $CURDIR/../../build_source/neutrino-hd2 ]; then
+	NMP_REV=_NHD2-rev`cd $CURDIR/../../build_source/neutrino-hd2 && git log | grep "^commit" | wc -l`
 else
 	NMP_REV=_NMP-revXXX
 fi
