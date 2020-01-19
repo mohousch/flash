@@ -65,6 +65,16 @@ case "$BOXTYPE" in
 		SIZE_VAR=0xEC0000
 		ERASE_SIZE=0x20000
 	;;
+	cuberevo_mini) echo "Creating flash image for $BOXTYPE..."
+		SIZE_KERNEL=0x220000
+		SIZE_ROOT=0x1380000
+		SIZE_VAR=0xA00000
+		ERASE_SIZE=0x20000
+		HWMODEL=0x00052000
+		HWVERSION=0x00010000
+		OUTFILE_OU=$OUTDIR/mtd234.img
+		OUTFILE=$OUTDIR/usb_update.img
+	;;
 	cuberevo_mini2) echo "Creating flash image for $BOXTYPE..."
 		SIZE_KERNEL=0x220000
 		SIZE_ROOT=0x1380000
@@ -135,7 +145,7 @@ $PAD $SIZE_VAR $CURDIR/mtd_var.sum.bin $CURDIR/mtd_var.sum.pad.bin
 
 # --- update.img ---
 #Merge all parts together
-if [ "$BOXTYPE" == "cuberevo_mini2" -o "$BOXTYPE" == "cuberevo" -o "$BOXTYPE" == "cuberevo_2000hd" -o "$BOXTYPE" == "cuberevo_3000hd" ]; then
+if [ "$BOXTYPE" == "cuberevo_mini" -o "$BOXTYPE" == "cuberevo_mini2" -o "$BOXTYPE" == "cuberevo" -o "$BOXTYPE" == "cuberevo_2000hd" -o "$BOXTYPE" == "cuberevo_3000hd" ]; then
 	cat $CURDIR/mtd_kernel.pad.bin >> $OUTDIR/out_tmp.img
 	cat $CURDIR/mtd_root.pad.bin >> $OUTDIR/out_tmp.img
 	cat $CURDIR/mtd_var.sum.pad.bin >> $OUTDIR/out_tmp.img
@@ -196,7 +206,7 @@ rm -f $CURDIR/mtd_root.pad.bin
 rm -f $CURDIR/mtd_var.sum.pad.bin
 
 md5sum -b $OUTFILE | awk -F' ' '{print $1}' > $OUTFILE.md5
-if [ "$BOXTYPE" == "cuberevo_mini2" -o "$BOXTYPE" == "cuberevo" -o "$BOXTYPE" == "cuberevo_2000hd" -o "$BOXTYPE" == "cuberevo_3000hd" ]; then
+if [ "$BOXTYPE" == "cuberevo_mini" -o "$BOXTYPE" == "cuberevo_mini2" -o "$BOXTYPE" == "cuberevo" -o "$BOXTYPE" == "cuberevo_2000hd" -o "$BOXTYPE" == "cuberevo_3000hd" ]; then
 	zip -j $OUTFILE_Z.zip $OUTFILE $OUTFILE.md5 $OUTFILE_OU $OUTFILE_OU.md5
 	rm -f $OUTFILE_OU
 	rm -f $OUTFILE_OU.md5
