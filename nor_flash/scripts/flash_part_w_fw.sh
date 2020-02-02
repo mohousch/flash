@@ -55,14 +55,14 @@ case "$BOXTYPE" in
 	;;
 	fortis_hdbox) echo "Creating flash image for $BOXTYPE..."
 		SIZE_KERNEL=0x200000
-		SIZE_ROOT=0xF00000
-		SIZE_VAR=0xEC0000
+		SIZE_ROOT=0x11C0000
+		SIZE_VAR=0xC00000
 		ERASE_SIZE=0x20000
 	;;
 	octagon1008) echo "Creating flash image for $BOXTYPE..."
 		SIZE_KERNEL=0x200000
-		SIZE_ROOT=0xF00000
-		SIZE_VAR=0xEC0000
+		SIZE_ROOT=0x11C0000
+		SIZE_VAR=0xC00000
 		ERASE_SIZE=0x20000
 	;;
 	cuberevo_mini) echo "Creating flash image for $BOXTYPE..."
