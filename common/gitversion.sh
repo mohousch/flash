@@ -5,8 +5,6 @@ DATETIME=_`date +%d.%m.%Y-%H.%M`
 
 if [ -d $CURDIR/../../build_source/libstb-hal-ddt ]; then
 	HAL_REV=_HAL-rev`cd $CURDIR/../../build_source/libstb-hal-ddt && git log | grep "^commit" | wc -l`-ddt
-elif [ -d $CURDIR/../../build_source/ni-libstb-hal ]; then
-	HAL_REV=_HAL-rev`cd $CURDIR/../../build_source/ni-libstb-hal && git log | grep "^commit" | wc -l`-ni
 elif [ -d $CURDIR/../../build_source/libstb-hal-tangos ]; then
 	HAL_REV=_HAL-rev`cd $CURDIR/../../build_source/libstb-hal-tangos && git log | grep "^commit" | wc -l`-tangos
 else
@@ -15,8 +13,8 @@ fi
 
 if [ -d $CURDIR/../../build_source/neutrino-ddt ]; then
 	NMP_REV=_NMP-rev`cd $CURDIR/../../build_source/neutrino-ddt && git log | grep "^commit" | wc -l`-ddt
-elif [ -d $CURDIR/../../build_source/ni-neutrino ]; then
-	NMP_REV=_NMP-rev`cd $CURDIR/../../build_source/ni-neutrino && git log | grep "^commit" | wc -l`-ni
+elif [ -d $CURDIR/../../build_source/neutrino-ddt-youtube ]; then
+	NMP_REV=_NMP-rev`cd $CURDIR/../../build_source/neutrino-ddt-youtube && git log | grep "^commit" | wc -l`-ddt-yt
 elif [ -d $CURDIR/../../build_source/neutrino-tangos ]; then
 	NMP_REV=_NMP-rev`cd $CURDIR/../../build_source/neutrino-tangos && git log | grep "^commit" | wc -l`-tangos
 else
