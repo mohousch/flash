@@ -57,7 +57,7 @@ fi
 
 OUTFILE=$OUTDIR/$BOXTYPE$gitversion
 
-TFINSTALLERDIR=$BASEDIR/tfinstaller
+TFINSTALLERDIR=$BASEDIR/hostapps/tfinstaller
 
 rm -rf $OUTDIR
 mkdir -p $OUTDIR
