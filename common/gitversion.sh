@@ -2,9 +2,10 @@
 
 CURDIR=$1
 DATETIME=_`date +%d.%m.%Y-%H.%M`
+BOXTYPE=$2
 
-if [ -d $CURDIR/../../build_source/neutrinohd2 ]; then
-	NMP_REV=_NHD2-rev`cd $CURDIR/../../build_source/neutrinohd2 && git log | grep "^commit" | wc -l`-ddt
+if [ -d $CURDIR/../../tufsbox/$BOXTYPE/build_source/neutrinohd2 ]; then
+	NMP_REV=_NHD2-rev`cd $CURDIR/../../tufsbox/$BOXTYPE/build_source/neutrinohd2 && git log | grep "^commit" | wc -l`-ddt
 else
 	NMP_REV=_NHD2-revXXX
 fi

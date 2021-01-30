@@ -5,10 +5,11 @@ if [ `id -u` != 0 ]; then
 	exit
 fi
 
+BOXTYPE=$2
 CURDIR=`pwd`
 BASEDIR=$CURDIR/../..
 
-TUFSBOXDIR=$BASEDIR/tufsbox
+TUFSBOXDIR=$BASEDIR/tufsbox/$BOXTYPE
 SCRIPTDIR=$CURDIR/scripts
 TMPDIR=$CURDIR/tmp
 TMPROOTDIR=$TMPDIR/ROOT

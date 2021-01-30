@@ -25,7 +25,7 @@ elif [ -f $TMPROOTDIR/var/etc/hostname ]; then
 	BOXTYPE=`cat $TMPROOTDIR/var/etc/hostname`
 fi
 
-. $CURDIR/../common/gitversion.sh $CURDIR
+. $CURDIR/../common/gitversion.sh $CURDIR $BOXTYPE
 
 OUTFILE=$OUTDIR/update_w_fw.img
 OUTFILE_Z=$OUTDIR/$BOXTYPE$gitversion

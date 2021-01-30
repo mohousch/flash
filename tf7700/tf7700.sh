@@ -8,7 +8,7 @@ fi
 CURDIR=`pwd`
 BASEDIR=$CURDIR/../..
 
-TUFSBOXDIR=$BASEDIR/tufsbox
+TUFSBOXDIR=$BASEDIR/tufsbox/tf7700
 TMPDIR=$CURDIR/tmp
 TMPROOTDIR=$TMPDIR/ROOT
 OUTDIR=$CURDIR/out
@@ -53,7 +53,7 @@ elif [ -f $TMPROOTDIR/var/etc/hostname ]; then
 	BOXTYPE=`cat $TMPROOTDIR/var/etc/hostname`
 fi
 
-. $CURDIR/../common/gitversion.sh $CURDIR
+. $CURDIR/../common/gitversion.sh $CURDIR $BOXTYPE
 
 OUTFILE=$OUTDIR/$BOXTYPE$gitversion
 

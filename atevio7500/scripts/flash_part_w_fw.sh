@@ -23,7 +23,7 @@ FUP=$TUFSBOXDIR/host/bin/fup
 
 BOXTYPE=`cat $TMPEXTDIR/etc/hostname`
 
-. $CURDIR/../common/gitversion.sh $CURDIR
+. $CURDIR/../common/gitversion.sh $CURDIR $BOXTYPE
 
 OUTFILE=$OUTDIR/update_w_fw.ird
 OUTFILE_Z=$OUTDIR/$BOXTYPE$gitversion
